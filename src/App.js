@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ShiftForm from './components/ShiftForm';
+import ShiftTable from './components/ShiftTable';
+import { Container, Typography } from '@mui/material';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [shifts, setShifts] = useState([]);
+
+    const handleAddShift = (newShift) => {
+        setShifts([...shifts, newShift]);
+    };
+
+    return (
+        <Container>
+            <Typography variant="h4" align="center" gutterBottom>
+                Shift Management
+            </Typography>
+            <ShiftForm onAddShift={handleAddShift} />
+            <ShiftTable shifts={shifts} />
+        </Container>
+    );
+};
 
 export default App;
