@@ -28,8 +28,7 @@ const App = () => {
     const [shifts, setShifts] = useState([]);
     const [currentShift, setCurrentShift] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
-    const [deleteIndex, setDeleteIndex] = useState(null);
+    const [deleteIndex, setDeleteIndex] = useState(null); // To store the index of the shift to delete
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [sequence, setSequence] = useState(1);
 
@@ -70,6 +69,7 @@ const App = () => {
 
             const addedShift = await createShift(shiftWithId);
             setShifts([...shifts, addedShift]);
+            resetForm(); // Reset form after adding a shift
         } catch (error) {
             console.error("Failed to add shift:", error);
         }
@@ -78,43 +78,42 @@ const App = () => {
     const handleEditShift = (index) => {
         setCurrentShift(shifts[index]);
         setIsEditing(true);
-        setEditIndex(index);
     };
 
     const handleUpdateShift = async (shiftId, updatedShiftData) => {
         try {
             const updatedShift = await updateShift(shiftId, updatedShiftData);
             setShifts(shifts.map(shift => (shift.shiftId === shiftId ? updatedShift : shift)));
+            resetForm(); // Reset form after updating a shift
         } catch (error) {
             console.error("Failed to update shift:", error);
         }
     };
 
-    const handleDeleteShift = async (shiftId) => {
+    const handleDeleteShift = (shiftId) => {
+        setDeleteIndex(shiftId); // Store shiftId to confirm deletion
+        setIsDialogOpen(true); // Open confirmation dialog
+    };
+
+    const confirmDelete = async () => {
         try {
-            await deleteShift(shiftId);
-            setShifts(shifts.filter(shift => shift.shiftId !== shiftId));
+            await deleteShift(deleteIndex); // Perform delete
+            setShifts(shifts.filter(shift => shift.shiftId !== deleteIndex));
         } catch (error) {
             console.error("Failed to delete shift:", error);
         }
-    };
-
-    const confirmDelete = () => {
-        const updatedShifts = shifts.filter((_, i) => i !== deleteIndex);
-        setShifts(updatedShifts);
-        setIsDialogOpen(false);
-        setDeleteIndex(null);
+        setIsDialogOpen(false); // Close the dialog
+        setDeleteIndex(null); // Reset deleteIndex
     };
 
     const cancelDelete = () => {
-        setIsDialogOpen(false);
-        setDeleteIndex(null);
+        setIsDialogOpen(false); // Close the dialog without deleting
+        setDeleteIndex(null); // Reset deleteIndex
     };
 
     const resetForm = () => {
         setIsEditing(false);
         setCurrentShift(null);
-        setEditIndex(null);
     };
 
     return (
