@@ -1,9 +1,8 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 
-const ShiftTable = ({ shifts }) => {
+const ShiftTable = ({ shifts, onEdit }) => {
     return (
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
             <Table>
@@ -22,11 +21,12 @@ const ShiftTable = ({ shifts }) => {
                         <TableCell>Coordinator</TableCell>
                         <TableCell>Assigned To</TableCell>
                         <TableCell>Status</TableCell>
+                        <TableCell>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {shifts.map((shift, index) => (
-                        <TableRow key={index}>
+                        <TableRow key={shift.shiftId}>
                             <TableCell>{shift.shiftId}</TableCell>
                             <TableCell>{shift.location}</TableCell>
                             <TableCell>{shift.date}</TableCell>
@@ -40,6 +40,11 @@ const ShiftTable = ({ shifts }) => {
                             <TableCell>{shift.coordinator}</TableCell>
                             <TableCell>{shift.assignedTo}</TableCell>
                             <TableCell>{shift.status}</TableCell>
+                            <TableCell>
+                                <IconButton onClick={() => onEdit(index)} color="primary">
+                                    <EditIcon />
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -49,4 +54,3 @@ const ShiftTable = ({ shifts }) => {
 };
 
 export default ShiftTable;
-
