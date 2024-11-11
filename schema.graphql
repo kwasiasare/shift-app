@@ -1,0 +1,54 @@
+# Define the Shift type representing a shift document in Cosmos DB
+type Shift {
+  id: ID!                      # Unique identifier for each shift
+  location: String!            # Location of the shift
+  date: String!                # Date of the shift
+  startTime: String!           # Start time of the shift
+  endTime: String!             # End time of the shift
+  mapStaff: Boolean            # Indicates if staff are mapped (Yes/No)
+  gender: String               # Gender of staff (Male, Female, Other, N/a)
+  originalMessage: String      # Original message or note about the shift
+  dateReceived: String         # Date when the shift was created, generated automatically
+  timeReceived: String         # Time when the shift was created, generated automatically
+  coordinator: String          # Optional coordinator name for the shift
+  assignedTo: String           # Optional name of the person the shift is assigned to
+  status: String!              # Status of the shift (e.g., "Assigned To Coordinator", "In Progress")
+}
+
+# Queries for retrieving data
+type Query {
+  getShifts: [Shift]           # Retrieve all shifts
+  getShiftById(id: ID!): Shift # Retrieve a specific shift by its ID
+}
+
+# Mutations for creating, updating, and deleting shift entries
+type Mutation {
+  createShift(
+    location: String!,
+    date: String!,
+    startTime: String!,
+    endTime: String!,
+    mapStaff: Boolean,
+    gender: String,
+    originalMessage: String,
+    coordinator: String,
+    assignedTo: String,
+    status: String!
+  ): Shift                        # Creates a new shift and returns the created shift
+
+  updateShift(
+    id: ID!,
+    location: String!,
+    date: String!,
+    startTime: String!,
+    endTime: String!,
+    mapStaff: Boolean,
+    gender: String,
+    originalMessage: String,
+    coordinator: String,
+    assignedTo: String,
+    status: String!
+  ): Shift                        # Updates an existing shift and returns the updated shift
+
+  deleteShift(id: ID!): Boolean   # Deletes a shift by its ID, returns true if deletion is successful
+}
