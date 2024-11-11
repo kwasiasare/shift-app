@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ShiftForm from './components/ShiftForm';
 import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 
 const App = () => {
     const [shifts, setShifts] = useState([]);
@@ -11,11 +10,31 @@ const App = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null); // To store the index of the shift to delete
     const [isDialogOpen, setIsDialogOpen] = useState(false); // To manage dialog open state
+    const [sequence, setSequence] = useState(1); // To track the sequence number
+
+    // Function to generate the custom ID in "yyyymmdd-xxx" format
+    const generateCustomId = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        
+        // Format the sequential number to always be 3 digits (e.g., 001, 002)
+        const formattedSequence = String(sequence).padStart(3, '0');
+        
+        // Combine date and sequence to form the ID
+        const customId = `${year}${month}${day}-${formattedSequence}`;
+        
+        // Update sequence for the next ID
+        setSequence(sequence + 1);
+        
+        return customId;
+    };
 
     const handleAddShift = (newShift) => {
         const shiftWithId = {
             ...newShift,
-            shiftId: uuidv4(),
+            shiftId: generateCustomId(),
             dateReceived: new Date().toLocaleDateString(),
             timeReceived: new Date().toLocaleTimeString()
         };
@@ -42,7 +61,6 @@ const App = () => {
         setIsDialogOpen(true);
     };
 
-    // Function to confirm and delete the shift
     const confirmDelete = () => {
         const updatedShifts = shifts.filter((_, i) => i !== deleteIndex);
         setShifts(updatedShifts);
@@ -50,7 +68,6 @@ const App = () => {
         setDeleteIndex(null); // Reset deleteIndex
     };
 
-    // Function to cancel delete action
     const cancelDelete = () => {
         setIsDialogOpen(false); // Close the dialog without deleting
         setDeleteIndex(null); // Reset deleteIndex
