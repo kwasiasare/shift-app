@@ -1,53 +1,24 @@
-// src/api.js
 import axios from 'axios';
 
-// Replace with your actual Azure Function App URL
-const API_BASE_URL = 'https://shift-funx-24.azurewebsites.net/api';
+// Base URL for the Cosmos DB connection in Azure Static Web Apps
+const API_BASE_URL = 'https://calm-beach-09b2e6d0f.5.azurestaticapps.net/api/cosmos';
 
-export const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-export const createShift = async (shiftData) => {
-    try {
-        const response = await axiosInstance.post('/createShift', shiftData);
-        return response.data;
-    } catch (error) {
-        console.error("Error creating shift:", error);
-        throw error;
-    }
+// GET: Fetch data
+export const getData = async () => {
+    return await axios.get(`${API_BASE_URL}/items`);
 };
 
-export const readShifts = async () => {
-    try {
-        const response = await axiosInstance.get('/readShifts');
-        return response.data;
-    } catch (error) {
-        console.error("Error reading shifts:", error);
-        throw error;
-    }
+// POST: Create data
+export const createData = async (data) => {
+    return await axios.post(`${API_BASE_URL}/items`, data);
 };
 
-export const updateShift = async (shiftId, updatedData) => {
-    try {
-        const response = await axiosInstance.put(`/updateShift/${shiftId}`, updatedData);
-        return response.data;
-    } catch (error) {
-        console.error("Error updating shift:", error);
-        throw error;
-    }
+// PUT: Update data
+export const updateData = async (id, data) => {
+    return await axios.put(`${API_BASE_URL}/items/${id}`, data);
 };
 
-export const deleteShift = async (shiftId) => {
-    try {
-        const response = await axiosInstance.delete(`/deleteShift/${shiftId}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error deleting shift:", error);
-        throw error;
-    }
+// DELETE: Delete data
+export const deleteData = async (id) => {
+    return await axios.delete(`${API_BASE_URL}/items/${id}`);
 };
-
