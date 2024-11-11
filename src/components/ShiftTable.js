@@ -8,21 +8,21 @@ const ShiftTable = ({ shifts, onEdit, onDelete }) => {
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
             <Table>
                 <TableHead>
-                    <TableRow>
-                        <TableCell>Shift ID</TableCell>
-                        <TableCell>Location</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Start Time</TableCell>
-                        <TableCell>End Time</TableCell>
-                        <TableCell>Map Staff</TableCell>
-                        <TableCell>Gender</TableCell>
-                        <TableCell>Original Message</TableCell>
-                        <TableCell>Date Received</TableCell>
-                        <TableCell>Time Received</TableCell>
-                        <TableCell>Coordinator</TableCell>
-                        <TableCell>Assigned To</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Actions</TableCell>
+                    <TableRow style={{ backgroundColor: '#004d40' }}> {/* Dark sea-blue header */}
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Shift ID</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Location</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Date</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Start Time</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>End Time</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Map Staff</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Gender</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Original Message</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Date Received</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Time Received</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Coordinator</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Assigned To</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Status</TableCell>
+                        <TableCell style={{ fontWeight: 'bold', color: '#ffffff' }}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
