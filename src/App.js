@@ -37,7 +37,12 @@ const App = () => {
         setShifts(updatedShifts);
         resetForm(); // Reset form after updating
     };
-
+ 
+    const handleDeleteShift = (index) => {
+        const updatedShifts = shifts.filter((_, i) => i !== index);
+        setShifts(updatedShifts);
+    };
+ 
     // Reset form state to add mode
     const resetForm = () => {
         setIsEditing(false);
@@ -59,6 +64,7 @@ const App = () => {
             <ShiftTable
                 shifts={shifts}
                 onEdit={handleEditShift}
+                onDelete={handleDeleteShift}
             />
         </Container>
     );

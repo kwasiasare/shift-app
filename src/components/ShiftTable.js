@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const ShiftTable = ({ shifts, onEdit }) => {
+const ShiftTable = ({ shifts, onEdit, onDelete }) => {
     return (
         <TableContainer component={Paper} style={{ marginTop: '20px' }}>
             <Table>
@@ -43,6 +44,9 @@ const ShiftTable = ({ shifts, onEdit }) => {
                             <TableCell>
                                 <IconButton onClick={() => onEdit(index)} color="primary">
                                     <EditIcon />
+                                </IconButton>
+                                <IconButton onClick={() => onDelete(index)} color="secondary">
+                                    <DeleteIcon />
                                 </IconButton>
                             </TableCell>
                         </TableRow>
