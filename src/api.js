@@ -23,11 +23,6 @@ export const readShifts = async () => {
     }
 };
 
-// GET: Fetch a specific shift by ID
-export const getShiftById = async (id) => {
-    return await axios.get(`${API_BASE_URL}/items/${id}`);
-};
-
 // Update an existing shift in Cosmos DB
 export const updateShift = async (id, updatedData) => {
     try {
