@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Replace with your actual Azure Function App URL
-const API_BASE_URL = 'https://shift-funx-24.azurewebsites.net/api';
+const API_BASE_URL = 'https://calm-beach-09b2e6d0f.5.azurestaticapps.net/api';
 
 export const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
