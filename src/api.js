@@ -1,42 +1,50 @@
+// src/api.js
 import axios from 'axios';
 
-// Base URL for the Cosmos DB connection in Azure Static Web Apps
-const API_BASE_URL = 'https://calm-beach-09b2e6d0f.5.azurestaticapps.net/api/cosmos';
+// Replace with your actual Azure Function App URL
+const API_BASE_URL = 'https://shift-funx-24.azurewebsites.net/api';
 
-// POST: Create a new shift
+export const axiosInstance = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
 export const createShift = async (shiftData) => {
     try {
-        return await axios.post(`${API_BASE_URL}/items`, shiftData);
+        const response = await axiosInstance.post('/createShift', shiftData);
+        return response.data;
     } catch (error) {
         console.error("Error creating shift:", error);
         throw error;
     }
 };
 
-// GET: Fetch all shifts (Read operation)
 export const readShifts = async () => {
     try {
-        return await axios.get(`${API_BASE_URL}/items`);
+        const response = await axiosInstance.get('/readShifts');
+        return response.data;
     } catch (error) {
         console.error("Error reading shifts:", error);
         throw error;
     }
 };
 
-// PUT: Update an existing shift
-export const updateShift = async (id, shiftData) => {
+export const updateShift = async (shiftId, updatedData) => {
     try {
-        return await axios.put(`${API_BASE_URL}/items/${id}`, shiftData);
+        const response = await axiosInstance.put(`/updateShift/${shiftId}`, updatedData);
+        return response.data;
     } catch (error) {
         console.error("Error updating shift:", error);
         throw error;
     }
 };
 
-// DELETE: Delete a shift
-export const deleteShift = async (id) => {
+export const deleteShift = async (shiftId) => {
     try {
-        return await axios.delete(`${API_BASE_URL}/items/${id}`);
+        const response = await axiosInstance.delete(`/deleteShift/${shiftId}`);
+        return response.data;
     } catch (error) {
         console.error("Error deleting shift:", error);
         throw error;

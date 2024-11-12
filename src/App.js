@@ -28,30 +28,24 @@ const App = () => {
     const [shifts, setShifts] = useState([]);
     const [currentShift, setCurrentShift] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [deleteIndex, setDeleteIndex] = useState(null); // To store the index of the shift to delete
-    const [editIndex, setEditIndex] = useState(null); // Track the index of the shift being edited
-    const [isDialogOpen, setIsDialogOpen] = useState(false); // To manage dialog open state
-    const [sequence, setSequence] = useState(1); // To track the sequence number
+    const [editIndex, setEditIndex] = useState(null);
+    const [deleteIndex, setDeleteIndex] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [sequence, setSequence] = useState(1);
 
     // Function to generate the custom ID in "yyyymmdd-xxx" format
     const generateCustomId = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
         const day = String(currentDate.getDate()).padStart(2, '0');
-        
-        // Format the sequential number to always be 3 digits (e.g., 001, 002)
         const formattedSequence = String(sequence).padStart(3, '0');
         
-        // Combine date and sequence to form the ID
-        const customId = `${year}${month}${day}-${formattedSequence}`;
-        
-        // Update sequence for the next ID
         setSequence(sequence + 1);
         
         return `${year}${month}${day}-${formattedSequence}`;
     };
-       
+
     // Fetch Shifts on Component Mount
     useEffect(() => {
         const fetchShifts = async () => {
@@ -64,7 +58,6 @@ const App = () => {
         };
         fetchShifts();
     }, []);
-
 
     const handleAddShift = async (newShift) => {
         try {
@@ -81,7 +74,6 @@ const App = () => {
             console.error("Failed to add shift:", error);
         }
     };
-
 
     const handleEditShift = (index) => {
         setCurrentShift(shifts[index]);
@@ -107,27 +99,22 @@ const App = () => {
         }
     };
 
-    // Function to confirm and delete the shift
-    const confirmDelete = async () => {
-        try {
-            await deleteShift(deleteIndex); // Perform delete
-            setShifts(shifts.filter(shift => shift.shiftId !== deleteIndex));
-        } catch (error) {
-            console.error("Failed to delete shift:", error);
-        }
-        setIsDialogOpen(false); // Close the dialog
-        setDeleteIndex(null); // Reset deleteIndex
+    const confirmDelete = () => {
+        const updatedShifts = shifts.filter((_, i) => i !== deleteIndex);
+        setShifts(updatedShifts);
+        setIsDialogOpen(false);
+        setDeleteIndex(null);
     };
 
-    // Function to cancel delete action
     const cancelDelete = () => {
-        setIsDialogOpen(false); // Close the dialog without deleting
-        setDeleteIndex(null); // Reset deleteIndex
+        setIsDialogOpen(false);
+        setDeleteIndex(null);
     };
 
     const resetForm = () => {
         setIsEditing(false);
         setCurrentShift(null);
+        setEditIndex(null);
     };
 
     return (
