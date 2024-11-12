@@ -58,17 +58,6 @@ const App = () => {
         fetchShifts();
     }, []);
 
-    // Example usage (if needed for a specific feature)
-    const fetchShiftById = async (id) => {
-        try {
-            const shift = await getShiftById(id);
-            setCurrentShift(shift);
-        } catch (error) {
-            console.error("Failed to fetch shift by ID:", error);
-        }
-    };
-
-
     // Handler to add a new shift
     const handleAddShift = async (newShift) => {
         try {

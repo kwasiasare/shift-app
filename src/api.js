@@ -5,7 +5,7 @@ const API_BASE_URL = 'https://calm-beach-09b2e6d0f.5.azurestaticapps.net/api/cos
 
 export const createShift = async (shiftData) => {
     try {
-        const response = await axiosInstance.post('/createShift', shiftData);
+        const response = await axios.post('/createShift', shiftData);
         return response.data;
     } catch (error) {
         console.error("Error creating shift:", error);
@@ -15,7 +15,7 @@ export const createShift = async (shiftData) => {
 
 export const readShifts = async () => {
     try {
-        const response = await axiosInstance.get('/readShifts');
+        const response = await axios.get('/readShifts');
         return response.data;
     } catch (error) {
         console.error("Error reading shifts:", error);
