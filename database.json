@@ -1,0 +1,11 @@
+{
+  "connections": {
+    "cosmos": {
+      "databaseType": "CosmosDB",
+      "connectionStringSetting": "COSMOS_DB_CONNECTION_STRING",
+      "databaseName": "shiftdatabase",
+      "containerName": "Shifts",
+      "partitionKey": "/ShiftId"
+    }
+  }
+}
