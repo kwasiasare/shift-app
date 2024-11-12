@@ -58,23 +58,22 @@ const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label="Location"
-                            name="location"
-                            value={shift.location}
+                            label="Shift ID"           // Display as Shift ID to users
+                            name="id"
+                            value={shift.id || ''}      // Store as 'id' in data
                             onChange={handleChange}
-                            required
+                            required                    // Add 'required' if Shift ID is mandatory
                         />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            fullWidth
-                            label="Date"
-                            name="date"
-                            type="date"
-                            InputLabelProps={{ shrink: true }}
-                            value={shift.date}
-                            onChange={handleChange}
-                            required
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        label="Location"
+                        name="location"
+                        value={shift.location}
+                        onChange={handleChange}
+                        required
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
