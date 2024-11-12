@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, TextField, MenuItem, Button, Typography, Container, Paper } from '@mui/material';
 
-
-const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
+const ShiftForm = ({ onAddShift, isEditing = false, currentShift = null }) => {
     const [shift, setShift] = useState({
         location: '',
         date: '',
@@ -15,14 +14,13 @@ const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
         assignedTo: '',
         status: ''
     });
-
-    // Populate form with current shift data if editing
+     
     useEffect(() => {
         if (isEditing && currentShift) {
             setShift(currentShift);
         }
     }, [isEditing, currentShift]);
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setShift({ ...shift, [name]: value });
@@ -30,20 +28,22 @@ const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (isEditing) {
-            onUpdateShift(shift);
-        } else {
-            onAddShift(shift)
-        }
-        
+        const newShift = {
+            ...shift,
+            dateReceived: new Date().toLocaleDateString(),
+            timeReceived: new Date().toLocaleTimeString()
+        };
+
+        onAddShift(newShift);
+
         // Reset form fields after submission
         setShift({
             location: '',
             date: '',
             startTime: '',
             endTime: '',
-            mapStaff: '',
-            gender: '',
+            mapStaff: 'No',
+            gender: 'N/a',
             originalMessage: '',
             coordinator: '',
             assignedTo: '',
@@ -53,7 +53,7 @@ const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
 
     return (
         <Container component={Paper} elevation={3} style={{ padding: '16px', marginBottom: '20px' }}>
-            <Typography variant="h6" gutterBottom>{isEditing ? "Edit Shift" : "Add Shift"}</Typography>
+            <Typography variant="h6" gutterBottom>Shift Details</Typography>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -175,7 +175,7 @@ const ShiftForm = ({ onAddShift, currentShift, isEditing, onUpdateShift }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
-                            {isEditing ? "Update Shift" : "Add Shift"}
+                            {isEditing ? 'Update Shift' : 'Add Shift'}
                         </Button>
                     </Grid>
                 </Grid>
