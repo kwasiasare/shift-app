@@ -4,7 +4,7 @@ import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './App.css'; // Import global styles
-import { createShift, readShifts, updateShift, deleteShift } from './api';
+import { getShifts, createShift, updateShift, deleteShift } from './api';
 
 // Custom sea-blue theme
 const theme = createTheme({
@@ -49,7 +49,7 @@ const App = () => {
     useEffect(() => {
         const fetchShifts = async () => {
             try {
-                const data = await readShifts();
+                const data = await getShifts();
                 setShifts(data);
             } catch (error) {
                 console.error("Failed to fetch shifts:", error);
