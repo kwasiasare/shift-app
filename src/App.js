@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShiftForm from './components/ShiftForm';
 import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './App.css'; // Import global styles
+import { createShift } from './api';
 
 // Custom sea-blue theme
 const theme = createTheme({
