@@ -29,6 +29,7 @@ const App = () => {
     const [currentShift, setCurrentShift] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(null); // To store the index of the shift to delete
+    const [editIndex, setEditIndex] = useState(null); // Track the index of the shift being edited
     const [isDialogOpen, setIsDialogOpen] = useState(false); // To manage dialog open state
     const [sequence, setSequence] = useState(1); // To track the sequence number
 
