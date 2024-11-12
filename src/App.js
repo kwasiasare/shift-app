@@ -4,7 +4,7 @@ import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './App.css'; // Import global styles
-import { getShifts, createShift, updateShift, deleteShift } from './api';
+import { createShift, readShifts, updateShift, deleteShift } from './api';
 
 // Custom sea-blue theme
 const theme = createTheme({
@@ -45,11 +45,11 @@ const App = () => {
         return `${year}${month}${day}-${formattedSequence}`;
     };
 
-    // Fetch Shifts on Component Mount
+     // Fetch shifts from the database on component mount
     useEffect(() => {
         const fetchShifts = async () => {
             try {
-                const data = await getShifts();
+                const data = await readShifts();
                 setShifts(data);
             } catch (error) {
                 console.error("Failed to fetch shifts:", error);
@@ -58,6 +58,18 @@ const App = () => {
         fetchShifts();
     }, []);
 
+    // Example usage (if needed for a specific feature)
+    const fetchShiftById = async (id) => {
+        try {
+            const shift = await getShiftById(id);
+            setCurrentShift(shift);
+        } catch (error) {
+            console.error("Failed to fetch shift by ID:", error);
+        }
+    };
+
+
+    // Handler to add a new shift
     const handleAddShift = async (newShift) => {
         try {
             const shiftWithId = {
@@ -75,11 +87,13 @@ const App = () => {
         }
     };
 
+    // Handler to set current shift for editing
     const handleEditShift = (index) => {
         setCurrentShift(shifts[index]);
         setIsEditing(true);
     };
 
+    // Handler to update an existing shift
     const handleUpdateShift = async (shiftId, updatedShiftData) => {
         try {
             const updatedShift = await updateShift(shiftId, updatedShiftData);
@@ -90,6 +104,7 @@ const App = () => {
         }
     };
 
+    // Handler to prompt delete confirmation
     const handleDeleteShift = (shiftId) => {
         setDeleteIndex(shiftId); // Store shiftId to confirm deletion
         setIsDialogOpen(true); // Open confirmation dialog
