@@ -3,37 +3,26 @@ import ShiftForm from './components/ShiftForm';
 import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './App.css'; // Import global styles
+import './App.css';
 import { createShift, readShifts, updateShift, deleteShift } from './api';
 
-// Custom sea-blue theme
 const theme = createTheme({
     palette: {
-        primary: {
-            main: '#00796b', // Sea-blue for primary buttons
-        },
-        secondary: {
-            main: '#004d40', // Darker sea-blue for secondary actions
-        },
-        background: {
-            default: '#e0f7fa', // Light sea-blue background color
-        },
+        primary: { main: '#00796b' },
+        secondary: { main: '#004d40' },
+        background: { default: '#e0f7fa' },
     },
-    typography: {
-        fontFamily: 'Roboto, sans-serif',
-    },
+    typography: { fontFamily: 'Roboto, sans-serif' },
 });
 
 const App = () => {
     const [shifts, setShifts] = useState([]);
     const [currentShift, setCurrentShift] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [sequence, setSequence] = useState(1);
 
-    // Function to generate the custom ID in "yyyymmdd-xxx" format
     const generateCustomId = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -46,7 +35,6 @@ const App = () => {
         return `${year}${month}${day}-${formattedSequence}`;
     };
 
-    // Fetch Shifts on Component Mount
     useEffect(() => {
         const fetchShifts = async () => {
             try {
@@ -70,6 +58,7 @@ const App = () => {
 
             const addedShift = await createShift(shiftWithId);
             setShifts([...shifts, addedShift]);
+            resetForm();  // Reset form after adding a new shift
         } catch (error) {
             console.error("Failed to add shift:", error);
         }
@@ -78,13 +67,13 @@ const App = () => {
     const handleEditShift = (index) => {
         setCurrentShift(shifts[index]);
         setIsEditing(true);
-        setEditIndex(index);
     };
 
     const handleUpdateShift = async (shiftId, updatedShiftData) => {
         try {
             const updatedShift = await updateShift(shiftId, updatedShiftData);
             setShifts(shifts.map(shift => (shift.shiftId === shiftId ? updatedShift : shift)));
+            resetForm();  // Reset form after updating a shift
         } catch (error) {
             console.error("Failed to update shift:", error);
         }
@@ -114,7 +103,6 @@ const App = () => {
     const resetForm = () => {
         setIsEditing(false);
         setCurrentShift(null);
-        setEditIndex(null);
     };
 
     return (
