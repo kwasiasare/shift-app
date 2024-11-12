@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ShiftForm from './components/ShiftForm';
 import ShiftTable from './components/ShiftTable';
 import { Container, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './App.css'; // Import global styles
-import { createShift, readShifts, updateShift, deleteShift } from './api';
 
 // Custom sea-blue theme
 const theme = createTheme({
@@ -28,88 +27,69 @@ const App = () => {
     const [shifts, setShifts] = useState([]);
     const [currentShift, setCurrentShift] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [editIndex, setEditIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null); // To store the index of the shift to delete
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [sequence, setSequence] = useState(1);
+    const [isDialogOpen, setIsDialogOpen] = useState(false); // To manage dialog open state
+    const [sequence, setSequence] = useState(1); // To track the sequence number
 
     // Function to generate the custom ID in "yyyymmdd-xxx" format
     const generateCustomId = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
         const day = String(currentDate.getDate()).padStart(2, '0');
+        
+        // Format the sequential number to always be 3 digits (e.g., 001, 002)
         const formattedSequence = String(sequence).padStart(3, '0');
         
+        // Combine date and sequence to form the ID
+        const customId = `${year}${month}${day}-${formattedSequence}`;
+        
+        // Update sequence for the next ID
         setSequence(sequence + 1);
         
-        return `${year}${month}${day}-${formattedSequence}`;
+        return customId;
     };
-
-     // Fetch shifts from the database on component mount
-    useEffect(() => {
-        const fetchShifts = async () => {
-            try {
-                const data = await readShifts();
-                setShifts(data);
-            } catch (error) {
-                console.error("Failed to fetch shifts:", error);
-            }
+       
+    const handleAddShift = (newShift) => {
+        const shiftWithId = {
+            ...newShift,
+            shiftId: generateCustomId(),
+            dateReceived: new Date().toLocaleDateString(),
+            timeReceived: new Date().toLocaleTimeString()
         };
-        fetchShifts();
-    }, []);
 
-    // Handler to add a new shift
-    const handleAddShift = async (newShift) => {
-        try {
-            const shiftWithId = {
-                ...newShift,
-                shiftId: generateCustomId(),
-                dateReceived: new Date().toLocaleDateString(),
-                timeReceived: new Date().toLocaleTimeString()
-            };
-
-            const addedShift = await createShift(shiftWithId);
-            setShifts([...shifts, addedShift]);
-            resetForm(); // Reset form after adding a shift
-        } catch (error) {
-            console.error("Failed to add shift:", error);
-        }
+        setShifts([...shifts, shiftWithId]);
     };
 
-    // Handler to set current shift for editing
     const handleEditShift = (index) => {
         setCurrentShift(shifts[index]);
         setIsEditing(true);
+        setEditIndex(index);
     };
 
-    // Handler to update an existing shift
-    const handleUpdateShift = async (shiftId, updatedShiftData) => {
-        try {
-            const updatedShift = await updateShift(shiftId, updatedShiftData);
-            setShifts(shifts.map(shift => (shift.shiftId === shiftId ? updatedShift : shift)));
-            resetForm(); // Reset form after updating a shift
-        } catch (error) {
-            console.error("Failed to update shift:", error);
-        }
+    const handleUpdateShift = (updatedShift) => {
+        const updatedShifts = shifts.map((shift, index) =>
+            index === editIndex ? { ...updatedShift, shiftId: shifts[editIndex].shiftId } : shift
+        );
+        setShifts(updatedShifts);
+        resetForm();
     };
 
-    // Handler to prompt delete confirmation
-    const handleDeleteShift = (shiftId) => {
-        setDeleteIndex(shiftId); // Store shiftId to confirm deletion
-        setIsDialogOpen(true); // Open confirmation dialog
+    const handleDeleteShift = (index) => {
+        setDeleteIndex(index);
+        setIsDialogOpen(true);
     };
 
-    const confirmDelete = async () => {
-        try {
-            await deleteShift(deleteIndex); // Perform delete
-            setShifts(shifts.filter(shift => shift.shiftId !== deleteIndex));
-        } catch (error) {
-            console.error("Failed to delete shift:", error);
-        }
+    // Function to confirm and delete the shift
+    const confirmDelete = () => {
+        const updatedShifts = shifts.filter((_, i) => i !== deleteIndex);
+        setShifts(updatedShifts);
         setIsDialogOpen(false); // Close the dialog
         setDeleteIndex(null); // Reset deleteIndex
     };
 
+    // Function to cancel delete action
     const cancelDelete = () => {
         setIsDialogOpen(false); // Close the dialog without deleting
         setDeleteIndex(null); // Reset deleteIndex
@@ -118,6 +98,7 @@ const App = () => {
     const resetForm = () => {
         setIsEditing(false);
         setCurrentShift(null);
+        setEditIndex(null);
     };
 
     return (
