@@ -28,7 +28,7 @@ const ShiftTable = ({ shifts, onEdit, onDelete }) => {
                 <TableBody>
                     {shifts.map((shift, index) => (
                         <TableRow key={shift.shiftId}>
-                            // Assuming 'shift' is an object representing a shift entry
+                            {/* Assuming 'shift' is an object representing a shift entry */}
                             <TableCell>{shift.id}</TableCell> {/* Use the id property in data, but label it as Shift ID */}
                             <TableCell>{shift.location}</TableCell>
                             <TableCell>{shift.date}</TableCell>
